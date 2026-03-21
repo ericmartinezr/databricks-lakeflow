@@ -26,6 +26,30 @@ export BROWSER=wslview
 databricks auth login
 ```
 
+### Iniciar proyecto
+
+```sh
+databricks bundle init
+
+# Configurar a gusto del consumidor
+```
+
+Luego que genere el proyecto, para instalar las dependencias, ejecutar
+
+```sh
+# Entrar al directorio del proyecto
+cd <nombre_proyecto>
+
+# Generar ambiente virtual
+uv venv
+
+# Activar ambiente virtual
+source .venv/bin/activate
+
+# Sincronizar las dependencias y otros
+uv sync
+```
+
 ###
 
 ## Referencia
