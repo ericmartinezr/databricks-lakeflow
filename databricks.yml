@@ -1,7 +1,7 @@
 # This is a Databricks asset bundle definition for test_databricks.
 # See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
 bundle:
-  name: test_databricks
+  name: databricks_lakeflow
   uuid: 08bcd056-70c2-4040-b19a-e2c353156989
 
 python:
@@ -37,7 +37,7 @@ targets:
       host: https://dbc-242761d2-d8ef.cloud.databricks.com
     variables:
       catalog: workspace
-      schema: ${workspace.current_user.short_name}
+      schema: lakeflow_db_dev
   prod:
     mode: production
     workspace:
@@ -46,7 +46,7 @@ targets:
       root_path: /Workspace/Users/eric.martinez@live.cl/.bundle/${bundle.name}/${bundle.target}
     variables:
       catalog: workspace
-      schema: prod
+      schema: lakeflow_db_prod
     permissions:
       - user_name: eric.martinez@live.cl
         level: CAN_MANAGE
