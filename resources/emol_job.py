@@ -31,7 +31,7 @@ job = Job(
     name="emol_job",
     tasks=[extract_links, extract_data],
     schedule=CronSchedule(
-        quartz_cron_expression="0 0 9 * * *",
+        quartz_cron_expression="0 0 9 * * ?",
         timezone_id="America/Santiago",
         pause_status=PauseStatus.UNPAUSED,
     ),

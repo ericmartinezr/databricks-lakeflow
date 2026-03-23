@@ -50,6 +50,12 @@ source .venv/bin/activate
 uv sync
 ```
 
+### Desplegar el bundle
+
+```sh
+databricks bundle deploy --target dev
+```
+
 ###
 
 ## Referencia
