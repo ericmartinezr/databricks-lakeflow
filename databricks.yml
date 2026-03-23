@@ -50,12 +50,3 @@ targets:
     permissions:
       - user_name: eric.martinez@live.cl
         level: CAN_MANAGE
-
-resources:
-  jobs:
-    emol_job:
-      tasks:
-        - task_key: extract_links
-          libraries:
-            - pypi:
-                package: scrapling==0.4

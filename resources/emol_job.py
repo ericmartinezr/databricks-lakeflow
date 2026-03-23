@@ -6,6 +6,8 @@ from databricks.bundles.jobs import (
     JobParameterDefinition,
     CronSchedule,
     PauseStatus,
+    Library,
+    PythonPyPiLibrary,
 )
 
 
@@ -15,6 +17,7 @@ extract_links = Task(
         notebook_path="src/tasks/extract_links.py",
         base_parameters={"run_date": "{{ job.parameters.run_date }}"},
     ),
+    libraries=[Library(pypi=PythonPyPiLibrary(package="scrapling==0.4"))],
 )
 
 extract_data = Task(
