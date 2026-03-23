@@ -258,6 +258,9 @@ wheels = [
 name = "databricks-lakeflow"
 version = "0.0.1"
 source = { editable = "." }
+dependencies = [
+    { name = "scrapling" },
+]
 
 [package.dev-dependencies]
 dev = [
@@ -267,10 +270,10 @@ dev = [
     { name = "ipykernel" },
     { name = "pytest" },
     { name = "ruff" },
-    { name = "scrapling" },
 ]
 
 [package.metadata]
+requires-dist = [{ name = "scrapling", specifier = "==0.4" }]
 
 [package.metadata.requires-dev]
 dev = [
@@ -280,7 +283,6 @@ dev = [
     { name = "ipykernel" },
     { name = "pytest" },
     { name = "ruff" },
-    { name = "scrapling", specifier = "==0.4" },
 ]
 
 [[package]]
