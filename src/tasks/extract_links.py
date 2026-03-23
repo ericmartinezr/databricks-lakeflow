@@ -1,7 +1,12 @@
 # Databricks notebook source
+# MAGIC %pip install curl_cffi
+# MAGIC %pip install scrapling==0.4
+
+# COMMAND ----------
+import requests
 from databricks.sdk.runtime import dbutils
 from datetime import datetime, timedelta
-from scrapling import Fetcher
+from scrapling.parser import Selector
 
 
 dbutils.widgets.text("run_date", "")
@@ -47,7 +52,7 @@ params = {"size": 5, "from": 0, "fechaPublicacion": yesterday}
 
 def fetch_data(params):
     news_links = []
-    request = Fetcher.get(url, params=params)
+    request = requests.get(url, params=params)
     data = request.json()
 
     hits_news = data["hits"]["hits"]

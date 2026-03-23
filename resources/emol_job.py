@@ -6,8 +6,6 @@ from databricks.bundles.jobs import (
     JobParameterDefinition,
     CronSchedule,
     PauseStatus,
-    JobEnvironment,
-    Environment,
 )
 
 
@@ -17,7 +15,6 @@ extract_links = Task(
         notebook_path="src/tasks/extract_links.py",
         base_parameters={"run_date": "{{ job.parameters.run_date }}"},
     ),
-    environment_key="default",
 )
 
 extract_data = Task(
@@ -27,19 +24,12 @@ extract_data = Task(
         notebook_path="src/tasks/extract_data.py",
         base_parameters={"run_date": "{{ job.parameters.run_date }}"},
     ),
-    environment_key="default",
 )
 
 
 job = Job(
     name="emol_job",
     tasks=[extract_links, extract_data],
-    environments=[
-        JobEnvironment(
-            environment_key="default",
-            spec=Environment(dependencies=["../dist/*.whl"])
-        )
-    ],
     schedule=CronSchedule(
         quartz_cron_expression="0 0 9 * * ?",
         timezone_id="America/Santiago",
