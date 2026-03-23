@@ -38,11 +38,6 @@ targets:
     variables:
       catalog: workspace
       schema: lakeflow_db_dev
-    environments:
-      - environment_key: default
-        spec:
-          dependencies:
-            - scrapling==0.4
   prod:
     mode: production
     workspace:
