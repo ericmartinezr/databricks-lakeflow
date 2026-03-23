@@ -19,6 +19,7 @@ dev = [
     "databricks-connect>=15.4,<15.5",
     "ipykernel",
     "databricks-bundles==0.295.0",
+    "scrapling==0.4"
 ]
 
 [project.scripts]
