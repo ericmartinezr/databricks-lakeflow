@@ -65,3 +65,4 @@ databricks bundle deploy --target dev
 - https://www.databricks.com/blog/how-move-apache-airflowr-databricks-lakeflow-jobs
 - https://github.com/databricks/bundle-examples
 - https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html
+- https://docs.databricks.com/aws/en/dev-tools/bundles/settings
