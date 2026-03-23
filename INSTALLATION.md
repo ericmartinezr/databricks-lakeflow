@@ -54,4 +54,8 @@ uv sync
 
 ## Referencia
 
-https://docs.databricks.com/aws/en/dev-tools/cli/install#curl-install
+- https://docs.databricks.com/aws/en/dev-tools/cli/install#curl-install
+- https://databricks-sdk-py.readthedocs.io/en/latest/workspace/jobs/jobs.html
+- https://www.databricks.com/blog/how-move-apache-airflowr-databricks-lakeflow-jobs
+- https://github.com/databricks/bundle-examples
+- https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html

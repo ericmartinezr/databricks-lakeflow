@@ -6,6 +6,7 @@ from databricks.bundles.jobs import (
     JobParameterDefinition,
 )
 
+
 extract_links = Task(
     task_key="extract_links",
     notebook_task=NotebookTask(
@@ -22,6 +23,7 @@ extract_data = Task(
         base_parameters={"run_date": "{{ job.parameters.run_date }}"},
     ),
 )
+
 
 job = Job(
     name="emol_job",

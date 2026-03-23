@@ -1,4 +1,8 @@
 # Databricks notebook source
+from databricks.sdk.runtime import dbutils
+
+dbutils.widgets.text("run_date", "")
+run_date = dbutils.widgets.get("run_date")
 
 # TODO: Extrae los links usando la API de Emol
 
