@@ -1,8 +1,9 @@
 # Databricks notebook source
+
+# COMMAND ----------
 from databricks.sdk.runtime import dbutils
 from datetime import datetime, timedelta
-
-# MAGIC %pip install scikit-learn==1.7
+from sklearn.datasets import load_iris
 
 # COMMAND ----------
 dbutils.widgets.text("run_date", "")
@@ -12,12 +13,15 @@ print(f"Run date: {run_date}")
 print(f"Yesterday: {yesterday}")
 
 # COMMAND ----------
-from sklearn.datasets import load_iris
+
+# TODO: Validar, deberia capturar el error y retornar un simple mensaje
+# o deberia detener la ejecucion del pipeline en caso de excepcion
 
 try:
     # TODO: Apuntar a un Volumen de databricks
-    # file_name = f"{hook.get_path()}/iris_{ds}.csv"
-    file_name = ""
+    file_name = (
+        f"/Volumes/workspace/lakeflow_db/lakeflow_volume/iris_{run_date}.csv"
+    )
 
     data = load_iris(as_frame=True)
     df = data.frame
