@@ -10,5 +10,5 @@ spark = (
     SparkSession.builder.appName("ML Iris")
     .config("spark.sql.adaptive.enabled", "true")
     .config("spark.sql.adaptive.coalescePartitions.enabled", "true")
-    .getOrCreate("")
+    .getOrCreate()
 )
