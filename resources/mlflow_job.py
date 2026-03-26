@@ -12,7 +12,7 @@ from databricks.bundles.jobs import (
 extract_data = Task(
     task_key="extract_data",
     notebook_task=NotebookTask(
-        notebook_path="src/tasks/iris/extract_data.py",
+        notebook_path="src/iris/extract_data.py",
         base_parameters={"run_date": "{{ job.parameters.run_date }}"},
     ),
 )
@@ -22,7 +22,7 @@ validate_data = Task(
     task_key="validate_data",
     depends_on=[TaskDependency(task_key="extract_data")],
     notebook_task=NotebookTask(
-        notebook_path="src/tasks/iris/validate_data.py",
+        notebook_path="src/iris/validate_data.py",
         base_parameters={"run_date": "{{ job.parameters.run_date }}"},
     ),
 )

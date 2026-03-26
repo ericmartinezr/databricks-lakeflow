@@ -6,13 +6,10 @@
 # COMMAND ----------
 # MAGIC %restart_python
 
-# COMMAND ----------
-# MAGIC %run "../init_spark.py"
-
 
 # COMMAND ----------
-from databricks.sdk.runtime import dbutils
 import great_expectations as gx
+from databricks.sdk.runtime import dbutils
 
 # COMMAND ----------
 dbutils.widgets.text("run_date", "")
@@ -36,7 +33,6 @@ suite.add_expectation(
 )
 
 # COMMAND ----------
-
 file_name = (
     f"/Volumes/workspace/lakeflow_db/lakeflow_volume/iris_{run_date}.csv"
 )
