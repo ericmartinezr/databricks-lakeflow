@@ -13,10 +13,6 @@ print(f"Run date: {run_date}")
 print(f"Yesterday: {yesterday}")
 
 # COMMAND ----------
-
-# TODO: Validar, deberia capturar el error y retornar un simple mensaje
-# o deberia detener la ejecucion del pipeline en caso de excepcion
-
 try:
     # TODO: Apuntar a un Volumen de databricks
     file_name = (
@@ -29,6 +25,5 @@ try:
 
     print(f"Archivo {file_name} creado correctamente.")
 
-except Exception as e:
-    print("Error extracting training data")
-    print(e)
+except Exception as error:
+    raise RuntimeError(f"Error extracting training data: \n{error}")

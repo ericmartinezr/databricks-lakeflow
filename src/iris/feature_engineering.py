@@ -1,6 +1,7 @@
 # Databricks notebook source
 
 # COMMAND ----------
+import os
 from databricks.sdk.runtime import dbutils
 
 # COMMAND ----------
@@ -19,13 +20,31 @@ df.printSchema()
 
 # COMMAND ----------
 try:
-    file_name = f"/Volumes/workspace/lakeflow_db/lakeflow_volume/features_{run_date}.csv"
+    folder_name = (
+        f"/Volumes/workspace/lakeflow_db/lakeflow_volume/features/{run_date}"
+    )
+    file_name = f"{folder_name}/features_{run_date}.csv"
 
+    # Spark Dataframe, no puedo usar 'to_csv'
     df = df.withColumn(
         "sepal_ratio", df["sepal length (cm)"] / df["sepal width (cm)"]
     )
-    df.to_csv(file_name, index=False)
+
+    # Guardar el DF en carpeta con el nombre de la fecha de ejecucion
+    df.coalesce(1).write.mode("overwrite").option("header", True).csv(
+        folder_name
+    )
+
+    # Renombrar el archivo con nombre por defecto
+    files = os.listdir(folder_name)
+    csv_file = [f for f in files if f.endswith(".csv")][0]
+    os.rename(
+        f"{folder_name}/{csv_file}",
+        file_name,
+    )
+
     df.printSchema()
     print(f"Archivo {file_name} creado correctamente.")
-except Exception:
-    print("Error saving file with features")
+
+except Exception as error:
+    raise RuntimeError(f"Error saving features: \n{error}")
