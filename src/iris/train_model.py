@@ -1,3 +1,5 @@
+# Databricks notebook source
+
 # COMMAND ----------
 # MAGIC %pip install mlflow>=3.0 --upgrade
 
@@ -47,18 +49,17 @@ with mlflow.start_run(experiment_id=experiment.experiment_id) as active_run:
     model = RandomForestClassifier(random_state=RANDOM_STATE)
     model.fit(X_train, y_train)
     y_pred = model.predict(X_test)
-    
+
     signature = infer_signature(X_test, y_pred)
-    
+
     model_info = sklearn.log_model(
         sk_model=model,
         name="iris-model",
         signature=signature,
         input_example=X_test.iloc[:5],
     )
-    
+
     print(f"Id del modelo registrado '{model_info.model_id}'")
 
     dbutils.jobs.taskValues.set(key="run_id", value=run_id)
     dbutils.jobs.taskValues.set(key="model_id", value=model_info.model_id)
-

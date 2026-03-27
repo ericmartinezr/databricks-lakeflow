@@ -17,7 +17,6 @@ extract_data = Task(
     ),
 )
 
-# TODO: Short circuit
 validate_data = Task(
     task_key="validate_data",
     depends_on=[TaskDependency(task_key="extract_data")],
@@ -26,20 +25,28 @@ validate_data = Task(
         base_parameters={"run_date": "{{ job.parameters.run_date }}"},
     ),
 )
-#
-# feature_engineering = Task(
-#    task_key="feature_engineering",
-#    depends_on=[TaskDependency(task_key="validate_data")],
-# )
-#
-# train_register_model = Task(
-#    task_key="train_register_model",
-#    depends_on=[TaskDependency(task_key="feature_engineering")],
-# )
-#
+
+feature_engineering = Task(
+    task_key="feature_engineering",
+    depends_on=[TaskDependency(task_key="validate_data")],
+    notebook_task=NotebookTask(
+        notebook_path="src/iris/feature_engineering.py",
+        base_parameters={"run_date": "{{ job.parameters.run_date }}"},
+    ),
+)
+
+train_model = Task(
+    task_key="train_model",
+    depends_on=[TaskDependency(task_key="feature_engineering")],
+    notebook_task=NotebookTask(
+        notebook_path="src/iris/train_model.py",
+        base_parameters={"run_date": "{{ job.parameters.run_date }}"},
+    ),
+)
+
 # evaluate_model = Task(
 #    task_key="evaluate_model",
-#    depends_on=[TaskDependency(task_key="train_register_model")],
+#    depends_on=[TaskDependency(task_key="train_model")],
 # )
 #
 # test_model = Task(
@@ -59,8 +66,8 @@ job = Job(
     tasks=[
         extract_data,
         validate_data,
-        # feature_engineering,
-        # train_register_model,
+        feature_engineering,
+        train_model,
         # evaluate_model,
         # test_model,
         # copy_model,
