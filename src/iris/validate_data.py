@@ -53,3 +53,10 @@ batch_definition = data_asset.add_batch_definition_whole_dataframe(
 batch = batch_definition.get_batch({"dataframe": df})
 expectation = batch.validate(suite)
 print(f"Expectation result: \n{expectation}")
+
+
+# COMMAND ----------
+# Valida el suit de validaciones
+# Si el resultado es 'false' entonces no se puede continuar
+if expectation["success"] is False:
+    raise Exception("Data inválida")
