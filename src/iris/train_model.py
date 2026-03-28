@@ -40,7 +40,9 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 # COMMAND ----------
 
-experiment_name = "iris-experiment"
+# Obtengo el nombre del usuario, ya que Databricks requiere la forma "/User/<username>/<nombre-experimento>"
+username = spark.sql("SELECT current_user()").collect()[0][0]
+experiment_name = f"/Users/{username}/iris-experiment"
 experiment = mlflow.set_experiment(experiment_name)
 
 with mlflow.start_run(experiment_id=experiment.experiment_id) as active_run:
