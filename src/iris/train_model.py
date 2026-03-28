@@ -25,9 +25,10 @@ RANDOM_STATE = 42
 TEST_SIZE = 0.2
 
 # COMMAND ----------
-file_name = (
-    f"/Volumes/workspace/lakeflow_db/lakeflow_volume/features_{run_date}.csv"
+folder_name = (
+    f"/Volumes/workspace/lakeflow_db/lakeflow_volume/features/{run_date}"
 )
+file_name = f"{folder_name}/features_{run_date}.csv"
 
 df = pd.read_csv(file_name)
 
