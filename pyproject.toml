@@ -36,3 +36,6 @@ packages = ["src"]
 
 [tool.ruff]
 line-length = 80
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

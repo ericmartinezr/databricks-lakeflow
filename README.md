@@ -53,7 +53,14 @@ Debes vincular tu configuración local con la nube mediante un proceso de _Singl
 Ejecuta el inicio de sesión y sigue los pasos en tu navegador:
 
 ```bash
-databricks auth login
+databricks auth login --profile DEFAULT
+```
+
+Nota: Si comienza a arrojar el error de que el token es inválido, se deben realizar nuevamente los siguientes pasos:
+
+```bash
+export BROWSER=wslview
+databricks auth login --profile DEFAULT
 ```
 
 ### 3. Entorno Virtual y Dependencias
