@@ -4,11 +4,9 @@ Este proyecto tiene como objetivo principal explorar, aprender y establecer buen
 
 A continuación, se listan algunas ideas de Jobs y ETLs que se desarrollarán y analizarán en este repositorio:
 
-| Nombre del Job / ETL    | Tipo             | Descripción                                                                                                               | Factibilidad / Estado |
-| ----------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------- | --------------------- |
-| **Ingesta S3 o BBDD**   | Ingesta          | Job automatizado para recibir y cargar lotes de datos desde sistemas externos (ej. AWS S3 o PostgreSQL) a la capa Bronze. | Por definir           |
-| **Curaduría DLT**       | Pipeline         | Explorar un pipeline con Delta Live Tables para automatizar las transformaciones de datos Bronze -> Silver -> Gold.       | Por definir           |
-| **Análisis de Modelos** | Machine Learning | Entrenar un modelo de prueba y registrar parámetros, métricas y resultados con MLflow gestionado por un Job.              | Por definir           |
+| Nombre del Job / ETL | Tipo             | Descripción                                                                                                                      | Factibilidad / Estado |
+| -------------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
+| **Modelo Iris**      | Machine Learning | Entrenar un modelo de prueba con el dataset Iris y registrar parámetros, métricas y resultados con MLflow gestionado por un Job. | Terminado             |
 
 ---
 
@@ -107,6 +105,69 @@ Gracias a Databricks Asset Bundles, puedes controlar tus flujos de trabajo de fo
   ```bash
   uv run pytest
   ```
+
+---
+
+## Servir endpoint
+
+Una vez ejecutado el pipeline, se debería registrar el modelo en la ruta `workspace.lakeflow_db.iris_model_registry` por lo que al menos el esquema `lakeflow_db` debe existir en el workspace `workspace`.
+
+En la pantalla `Serving`:
+
+1. Presionar el botón `Create serving endpoint`
+2. En la nueva pantalla llenar la siguiente información:
+   2.1 **General**: Nombre del endpoint
+   2.2 **Serverd entities**: Presionar el input `Select an entity`, en el popup presionar `My models`, en el select `Select a model` buscar el modelo registrado o escribir manualmente `workspace.lakeflow_db.iris_model_registry`.
+
+Dejar todas las otras opciones con sus valores por defecto y presionar el botón `Create`.
+
+Luego esperar unos minutos ya que el endpoint demora bastante en quedar listo para usar.
+
+Cuando esté listo para usar (estado `Ready`) se puede probar usando el botón `Use` que muestra un popup con distintas opciones: `Browser`, `curl`, `Python` y `SQL`.
+
+Ejemplo
+
+```python
+# Browser
+
+# Input
+{
+  "dataframe_split": {
+    "columns": [
+      "sepal length (cm)",
+      "sepal width (cm)",
+      "petal length (cm)",
+      "petal width (cm)",
+      "sepal_ratio"
+    ],
+    "data": [
+      [
+        6.1,
+        2.8,
+        4.7,
+        1.2,
+        2.1785714285714284
+      ],
+      # ...
+    ]
+  }
+}
+
+# Output
+{
+  "predictions": [
+    1,
+    0,
+    2,
+    1,
+    1
+  ]
+}
+```
+
+### Imagen de referencia
+
+![Databricks Serving Endpoint](img/databricks_serving_endpoint.png)
 
 ---
 
