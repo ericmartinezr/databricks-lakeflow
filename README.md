@@ -15,7 +15,7 @@ A continuación, se listan algunas ideas de Jobs y ETLs que se desarrollarán y 
 El repositorio fue inicializado mediante plantillas de Databricks Bundles, lo que generó la siguiente estructura recomendada:
 
 - `src/`: Almacena el código fuente en Python (como los notebooks y scripts de extracción).
-- `resources/`: Contiene la definición de tus flujos de trabajo e infraestructura como código (ej. configuración del Job `emol_job`).
+- `resources/`: Contiene la definición de tus flujos de trabajo e infraestructura como código (ej. configuración del Job `mlflow_job`).
 - `tests/`: Destinado a las pruebas unitarias locales para certificar la estabilidad de tu código fuente.
 - `fixtures/`: Archivos y datasets estáticos locales para usarse durante las pruebas (`tests`).
 
@@ -108,29 +108,28 @@ Gracias a Databricks Asset Bundles, puedes controlar tus flujos de trabajo de fo
 
 ---
 
-## Servir endpoint
+## 🌐 Servir Endpoint
 
-Una vez ejecutado el pipeline, se debería registrar el modelo en la ruta `workspace.lakeflow_db.iris_model_registry` por lo que al menos el esquema `lakeflow_db` debe existir en el workspace `workspace`.
+Una vez ejecutado el pipeline, se debería registrar el modelo en la ruta `workspace.lakeflow_db.iris_model_registry`, por lo que al menos el esquema `lakeflow_db` debe existir en el catálogo `workspace`.
 
-En la pantalla `Serving`:
+En la pantalla de **Serving**:
 
-1. Presionar el botón `Create serving endpoint`
-2. En la nueva pantalla llenar la siguiente información:
-   2.1 **General**: Nombre del endpoint
-   2.2 **Serverd entities**: Presionar el input `Select an entity`, en el popup presionar `My models`, en el select `Select a model` buscar el modelo registrado o escribir manualmente `workspace.lakeflow_db.iris_model_registry`.
+1. Presionar el botón **`Create serving endpoint`**.
+2. En la nueva pantalla, llenar la siguiente información:
+   - **General**: Nombre del endpoint.
+   - **Served entities**: Presionar el campo `Select an entity`. En el popup emergente seleccionar `My models`, y en la lista desplegable `Select a model` buscar el modelo registrado o escribir manualmente `workspace.lakeflow_db.iris_model_registry`.
 
-Dejar todas las otras opciones con sus valores por defecto y presionar el botón `Create`.
+3. Dejar todas las otras opciones con sus valores por defecto y presionar el botón **`Create`**.
 
-Luego esperar unos minutos ya que el endpoint demora bastante en quedar listo para usar.
+> **Nota:** Esperar unos minutos, ya que el endpoint demora un tiempo en aprovisionar los recursos y quedar listo.
 
-Cuando esté listo para usar (estado `Ready`) se puede probar usando el botón `Use` que muestra un popup con distintas opciones: `Browser`, `curl`, `Python` y `SQL`.
+Cuando esté listo para usar (en estado `Ready`), se puede probar desde la UI usando el botón **`Query endpoint`** (o equivalente como `Use`), que desplegará un panel con distintas opciones de consumo: `Browser`, `curl`, `Python` y `SQL`.
 
-Ejemplo
+### Ejemplo de Petición (Browser)
 
-```python
-# Browser
+**Input JSON:**
 
-# Input
+```json
 {
   "dataframe_split": {
     "columns": [
@@ -140,32 +139,20 @@ Ejemplo
       "petal width (cm)",
       "sepal_ratio"
     ],
-    "data": [
-      [
-        6.1,
-        2.8,
-        4.7,
-        1.2,
-        2.1785714285714284
-      ],
-      # ...
-    ]
+    "data": [[6.1, 2.8, 4.7, 1.2, 2.1785]]
   }
-}
-
-# Output
-{
-  "predictions": [
-    1,
-    0,
-    2,
-    1,
-    1
-  ]
 }
 ```
 
-### Imagen de referencia
+**Output JSON:**
+
+```json
+{
+  "predictions": [1]
+}
+```
+
+### Imagen de Referencia
 
 ![Databricks Serving Endpoint](img/databricks_serving_endpoint.png)
 
@@ -175,12 +162,11 @@ Ejemplo
 
 Hasta el momento me he encontrado con las siguientes observaciones, todas aplican a Databricks Free.
 
-- No se puede configurar Spark, o al menos las siguientes opciones no se pueden utilizar
+- No se puede configurar Spark libremente, o al menos las siguientes opciones no se pueden utilizar:
+  - `spark.sql.adaptive.enabled`
+  - `spark.sql.adaptive.coalescePartitions.enabled`
 
-* spark.sql.adaptive.enabled
-* spark.sql.adaptive.coalescePartitions.enabled
-
-- Con Great Expectations, al agregar un contexto como `context.data_sources.add_spark` no se puede usar `persist` (True por defecto), ya que intenta almacenar los pasos intermedios, por lo que es necesario especificar `persist=False`
+- Con Great Expectations, al agregar un contexto como `context.data_sources.add_spark` no se puede usar `persist` (True por defecto), ya que intenta almacenar los pasos intermedios. Es necesario especificar `persist=False`:
 
 ```python
 suite = context.suites.add(suite)
@@ -201,4 +187,4 @@ datasource = context.data_sources.add_spark(
 - [Ejemplos Oficiales de Proyectos Bundles](https://github.com/databricks/bundle-examples)
 - [Generador / Explicador formato Quartz Cron](https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html)
 - [Artículos: Migración desde Apache Airflow a Lakeflow Jobs](https://www.databricks.com/blog/how-move-apache-airflowr-databricks-lakeflow-jobs)
-- https://docs.databricks.com/aws/en/notebooks/source/mlflow/mlflow3-ml-example.html
+- [Ejemplo Oficial de MLflow en Databricks](https://docs.databricks.com/aws/en/notebooks/source/mlflow/mlflow3-ml-example.html)
