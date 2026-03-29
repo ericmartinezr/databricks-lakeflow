@@ -9,7 +9,9 @@ dependencies = [
     #
     # LIMITATION: for pipelines, dependencies are cached during development;
     # add dependencies to the 'environment' section of your pipeline.yml file instead
-    "scikit-learn==1.7"
+    "scikit-learn==1.6.1",
+    "great_expectations==1.15.1",
+    "mlflow>=3.0"
 ]
 
 [dependency-groups]
