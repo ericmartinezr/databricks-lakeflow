@@ -1,4 +1,9 @@
 # Databricks notebook source
+"""
+Script de comprobación rápida ("smoke test").
+Carga el modelo recién evaluado desde MLflow y realiza predicciones
+con un pequeño lote de datos estáticos para confirmar que es operable.
+"""
 
 # COMMAND ----------
 import pandas as pd
@@ -6,7 +11,9 @@ import mlflow.sklearn
 from databricks.sdk.runtime import dbutils
 
 # COMMAND ----------
+# Extrae el ID de entrenamiento propagado anteriormente
 run_id = dbutils.jobs.taskValues.get(taskKey="evaluate_model", key="run_id")
+# Deserializa y carga el modelo localmente listo para predicción
 model = mlflow.sklearn.load_model(f"runs:/{run_id}/iris-model")
 df = pd.DataFrame(
     [
