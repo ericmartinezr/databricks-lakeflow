@@ -113,6 +113,10 @@ Gracias a Databricks Asset Bundles, puedes controlar tus flujos de trabajo de fo
   uv run pytest
   ```
 
+### Imagen de Referencia (Ejecución del pipeline)
+
+![Databricks Pipeline Run](img/databricks_pipeline_run.png)
+
 ---
 
 ## 🌐 Servir Endpoint
