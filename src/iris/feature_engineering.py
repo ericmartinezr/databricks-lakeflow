@@ -1,11 +1,18 @@
 # Databricks notebook source
+"""
+Script de ingeniería de características.
+Lee los datos sin procesar, crea nuevas variables (como el ratio de sépalo)
+y exporta los datos transformados listos para el entrenamiento.
+"""
 
 # COMMAND ----------
 import os
 from databricks.sdk.runtime import dbutils
 
 # COMMAND ----------
+# Define parámetro externo para capturar datos desde Databricks Job
 dbutils.widgets.text("run_date", "")
+# Obtiene el valor inyectado en la ejecución
 run_date = dbutils.widgets.get("run_date")
 print(f"Run date: {run_date}")
 
@@ -31,6 +38,7 @@ try:
     )
 
     # Guardar el DF en carpeta con el nombre de la fecha de ejecucion
+    # Exporta re-particionando a 1 solo archivo CSV usando Spark
     df.coalesce(1).write.mode("overwrite").option("header", True).csv(
         folder_name
     )

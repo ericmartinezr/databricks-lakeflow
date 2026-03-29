@@ -1,4 +1,9 @@
 # Databricks notebook source
+"""
+Script para asentar el modelo en el Model Registry (Unity Catalog).
+Si el modelo fue aprobado en la etapa de evaluación, se registra formalmente
+y se le asigna el alias 'production'.
+"""
 
 # COMMAND ----------
 # MAGIC %pip install mlflow>=3.0 --upgrade
@@ -14,9 +19,11 @@ from mlflow.tracking import MlflowClient
 # COMMAND ----------
 # Recuperar valores de la tarea de evaluación
 # NOTA: Asegúrate de que en la definición del Job la tarea anterior se llame 'evaluate_model'
+# Lee el Run ID desde MLflow
 run_id = dbutils.jobs.taskValues.get(
     taskKey="evaluate_model", key="run_id", default=""
 )
+# Determina si se excedió el threshold establecido
 is_model_approved = dbutils.jobs.taskValues.get(
     taskKey="evaluate_model", key="is_model_approved", default=False
 )
@@ -41,7 +48,7 @@ if is_model_approved:
         "\nEl modelo fue aprobado en la evaluación. Registrando el modelo en el Model Registry de Databricks..."
     )
 
-    # Registrar o crear una nueva versión del modelo
+    # Registrar o crear una nueva versión del modelo (Promueve el artefacto al Unity Catalog / Model Registry)
     model_details = mlflow.register_model(model_uri=model_uri, name=model_name)
     print(
         f"Modelo '{model_details.name}' registrado exitosamente (Versión: {model_details.version})"
@@ -49,6 +56,7 @@ if is_model_approved:
 
     # Asignar un Alias al modelo (método recomendado en MLflow)
     client = MlflowClient()
+    # Asigna alias "production", reemplazando la lógica de Stages antiguos
     client.set_registered_model_alias(
         name=model_name, alias="production", version=model_details.version
     )

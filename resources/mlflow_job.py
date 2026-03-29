@@ -1,3 +1,8 @@
+"""
+Define el flujo de trabajo (Job) de Databricks para el pipeline del modelo Iris.
+Orquesta secuencialmente las etapas de extracción, validación, ingeniería,
+entrenamiento, evaluación, prueba y registro.
+"""
 from databricks.bundles.jobs import (
     Job,
     Task,
