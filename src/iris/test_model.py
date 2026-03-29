@@ -2,12 +2,12 @@
 
 # COMMAND ----------
 import pandas as pd
+import mlflow.sklearn
 from databricks.sdk.runtime import dbutils
-from mlflow import sklearn
 
 # COMMAND ----------
-run_id = dbutils.jobs.taskValues.get(taskKey="train_model", key="run_id")
-model = sklearn.load_model(f"runs:/{run_id}/model")
+run_id = dbutils.jobs.taskValues.get(taskKey="evaluate_model", key="run_id")
+model = mlflow.sklearn.load_model(f"runs:/{run_id}/iris-model")
 df = pd.DataFrame(
     [
         [5.1, 3.5, 1.4, 0.2, 0.8],
